@@ -1,0 +1,10 @@
+{
+    // "/catalogue": {
+    //     "target": "https://us-central1-maple-grove-349221.cloudfunctions.net/maplr-sugar-bush/products",
+    //     "secure": true,
+    //     "changeOrigin": true,
+    //     "pathRewrite": {
+    //       "^/catalogue": ""
+    //     }
+    // }
+}

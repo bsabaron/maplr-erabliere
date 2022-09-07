@@ -1,0 +1,22 @@
+<div>
+    <span>filtre :</span>
+    <mat-form-field appearance="fill">
+        <mat-label>Type de sirop</mat-label>
+        <mat-select [(ngModel)]="typeSiropSlected" multiple>
+            <mat-option *ngFor="let type of typeSiropList" [value]="type">{{type | lowercase}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<table>
+    <tr class="clickable" *ngFor="let produit of produits | filtrerProduit: typeSiropSlected" (click)="voirDetail(produit)">
+        <th>
+            <img src="data:image/png;base64, {{produit.image}}" width="200" height="200">
+        </th>
+        <th>
+            <p>{{produit?.name}} - {{produit?.description}}</p>
+            <p>{{produit?.price}}$ CAD</p>
+            <button mat-raised-button>Ajouter au panier</button>
+        </th>
+    </tr>
+</table>
