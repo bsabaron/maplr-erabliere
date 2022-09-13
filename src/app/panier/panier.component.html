@@ -1,1 +1,15 @@
-<p>panier works!</p>
+<table>
+    <tr *ngFor="let produitAchatMap of panier.produitsAchatMap | keyvalue" (change)="calculerPrixTotal($event)">
+        <th>
+            <img src="data:image/png;base64, {{produit.image}}" width="200" height="200">
+        </th>
+        <th>
+            <p>{{produitAchatMap.key.name}} - {{produitAchatMap.key.description}}</p>
+            <p>Quantité : {{produitAchatMap.value}}</p>
+            <p>{{produitAchatMap.key.price}}$ CAD</p>
+            <button mat-raised-button (click)="retirer(produitAchatMap.key)">retirer</button>
+        </th>
+    </tr>
+</table>
+<p>Prix total : {{prixTotal}}$</p>
+<button mat-raised-button (click)="valider(panier)">Valider</button>

@@ -16,7 +16,7 @@
         <th>
             <p>{{produit?.name}} - {{produit?.description}}</p>
             <p>{{produit?.price}}$ CAD</p>
-            <button mat-raised-button>Ajouter au panier</button>
+            <button mat-raised-button (click)="ajouterPanier(produit)">Ajouter au panier</button>
         </th>
     </tr>
 </table>
