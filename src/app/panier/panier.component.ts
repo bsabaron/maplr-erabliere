@@ -10,30 +10,30 @@ import { Produit } from '../modeles/produit';
 })
 export class PanierComponent implements OnInit {
 
-  panier?: Panier
+  panier: Map<Produit, number> = new Map
   prixTotal: number = 0
 
   constructor(private panierService: PanierService) { }
 
   ngOnInit(): void {
-    this.panier = JSON.parse(sessionStorage.getItem('panier') ?? JSON.stringify([]));
+    this.panier = new Map(JSON.parse(sessionStorage.getItem('panier')!))
   }
 
   calculerPrixTotal(event: any) {
-    this.prixTotal = Array.from(this.panier!!.produitsAchatMap.values()).reduce((accumulator, price) => {
-      return accumulator + price;
+    this.prixTotal = Array.from(this.panier.keys()).reduce((accumulator, produit) => {
+      return accumulator + produit.price;
     }, 0);
   }
 
   retirer(produit: Produit) {
-    const indexProduitASupprimer = Array.from(this.panier!!.produitsAchatMap.keys()).findIndex((produit) => {
+    const indexProduitASupprimer = Array.from(this.panier.keys()).findIndex((produit) => {
       return produit.id === produit.id;
     })
-    Array.from(this.panier!!.produitsAchatMap.keys()).splice(indexProduitASupprimer, 1)
+    Array.from(this.panier.keys()).splice(indexProduitASupprimer, 1)
     sessionStorage.setItem('panier', JSON.stringify(this.panier))
   }
 
-  valider(panier: Panier) {
-    this.panierService.validerPanier(panier)
+  validerPanier() {
+    this.panierService.validerPanier(this.panier)
   }
 }

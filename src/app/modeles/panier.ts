@@ -1,5 +1,7 @@
 import { Produit } from "./produit";
 
-export interface Panier {
-    produitsAchatMap: Map<Produit, number>
+export class Panier {
+    produitsAchatMap: Map<Produit, number> = new Map<Produit, number>()
+
+    constructor() { }
 }

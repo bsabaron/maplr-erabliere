@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Produit } from '../modeles/produit';
 
 @Component({
   selector: 'app-menu',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  nbProduitAchat: number = 0
+  panier: Map<Produit, number>
+
+  constructor() {
+    this.panier = new Map(JSON.parse(sessionStorage.getItem('panier')!))
+    this.nbProduitAchat = Array.from(this.panier.values()).reduce((accumulator, quantite) => {
+      return accumulator + quantite;
+    }, 0);
+   }
 
   ngOnInit(): void {
+    
   }
 
 }

@@ -1,15 +1,15 @@
 <table>
-    <tr *ngFor="let produitAchatMap of panier.produitsAchatMap | keyvalue" (change)="calculerPrixTotal($event)">
+    <tr *ngFor="let item of panier | keyvalue" (change)="calculerPrixTotal($event)">
         <th>
-            <img src="data:image/png;base64, {{produit.image}}" width="200" height="200">
+            <img src="data:image/png;base64, {{item.key.image}}" width="200" height="200">
         </th>
         <th>
-            <p>{{produitAchatMap.key.name}} - {{produitAchatMap.key.description}}</p>
-            <p>Quantité : {{produitAchatMap.value}}</p>
-            <p>{{produitAchatMap.key.price}}$ CAD</p>
-            <button mat-raised-button (click)="retirer(produitAchatMap.key)">retirer</button>
+            <p>{{item.key.name}} - {{item.key.description}}</p>
+            <p>Quantité : {{item.value}}</p>
+            <p>{{item.key.price}}$ CAD</p>
+            <button mat-raised-button (click)="retirer(item.key)">retirer</button>
         </th>
     </tr>
 </table>
 <p>Prix total : {{prixTotal}}$</p>
-<button mat-raised-button (click)="valider(panier)">Valider</button>
+<button *ngIf="panier" mat-raised-button (click)="validerPanier()">Valider</button>

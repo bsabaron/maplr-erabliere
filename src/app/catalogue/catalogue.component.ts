@@ -1,4 +1,4 @@
-import { Panier } from './../modeles/panier';
+import { TypeSirop } from './../enum/type-sirop';
 import { ProduitService } from '../services/produit.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ export class CatalogueComponent implements OnInit {
   produits: Produit[] = [];
 
   typeSiropSlected: string[] = []
-  typeSiropList: string[] = ['CLEAR', 'AMBER', 'DARK'];
+  typeSiropList = TypeSirop
 
   constructor(private produitService: ProduitService, private router: Router) { }
 
@@ -29,12 +29,9 @@ export class CatalogueComponent implements OnInit {
   }
 
   ajouterPanier(produit: Produit) {
-    let panier = JSON.parse(sessionStorage.getItem('panier') ?? JSON.stringify([])) as Panier
-    if(Array.from(panier.produitsAchatMap.keys()).filter(p => p.id === produit.id)){
-      
-    }
-    panier.push(produit)
-    sessionStorage.setItem('panier', JSON.stringify(panier))
+    let panier: Map<Produit, number> = new Map(JSON.parse(sessionStorage.getItem('panier')!))
+    panier.set(produit, panier.get(produit) ?? 0 + 1)
+    sessionStorage.setItem('panier', JSON.stringify(Array.from(panier.entries())))
   }
 
 }

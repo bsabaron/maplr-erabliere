@@ -3,19 +3,27 @@
     <mat-form-field appearance="fill">
         <mat-label>Type de sirop</mat-label>
         <mat-select [(ngModel)]="typeSiropSlected" multiple>
-            <mat-option *ngFor="let type of typeSiropList" [value]="type">{{type | lowercase}}</mat-option>
+            <mat-option *ngFor="let type of typeSiropList | keyvalue" [value]="type.value">{{type.key | lowercase}}</mat-option>
         </mat-select>
     </mat-form-field>
 </div>
 
 <table>
-    <tr class="clickable" *ngFor="let produit of produits | filtrerProduit: typeSiropSlected" (click)="voirDetail(produit)">
-        <th>
+    <tr class="clickable" *ngFor="let produit of produits | filtrerProduit: typeSiropSlected">
+        <th (click)="voirDetail(produit)">
             <img src="data:image/png;base64, {{produit.image}}" width="200" height="200">
         </th>
         <th>
             <p>{{produit?.name}} - {{produit?.description}}</p>
             <p>{{produit?.price}}$ CAD</p>
+            <mat-form-field appearance="fill">
+                <mat-label>Quantité</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let qty of [].constructor(produit.maxQty); let i = index" [value]="i">
+                    {{i}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             <button mat-raised-button (click)="ajouterPanier(produit)">Ajouter au panier</button>
         </th>
     </tr>
