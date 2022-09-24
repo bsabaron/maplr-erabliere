@@ -3,17 +3,21 @@ header{
     height: 100px;
 }
 
-nav{
-    padding-left: 300px;
-    margin-bottom: 20px;
+.mat-toolbar{
+    padding-left: 15%;
     border-bottom: 1px solid rgba(0,0,0,.12);
 }
 
 aside{
     float: left;
-    width: 300px;
-    height: 700px;
+    width: 15%;
+    height: 850px;
     border-right: 1px solid rgba(0,0,0,.12);
+}
+
+.conteneur-principal{
+    display: inline-block;
+    width: 84%;
 }
 
 footer{

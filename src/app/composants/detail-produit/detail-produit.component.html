@@ -1,0 +1,25 @@
+<mat-card *ngIf="produit">
+    <h3>{{produit.name}}</h3>
+    <table>
+        <tr>
+            <th>
+                <img src="data:image/png;base64, {{produit.image}}" width="400" height="400">
+            </th>
+            <th>
+                <p>Description : {{produit.description}}</p>
+                <p>Type de sirop : {{produit.type | lowercase}}</p>
+                <p>Reste en stock: {{stock}}</p>
+                <p>{{produit.price | currency:'CAD':'symbol':'1.0-2':'fr'}}</p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Quantité</mat-label>
+                    <mat-select [(ngModel)]="qtySelected">
+                        <mat-option *ngFor="let qty of compteur(stock)" [value]="qty">
+                            {{qty}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="ajouterPanier(produit, qtySelected)" [disabled]="stock === 0">Ajouter au panier</button>
+            </th>
+        </tr>
+    </table>
+</mat-card>

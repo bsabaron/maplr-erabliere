@@ -1,0 +1,10 @@
+<mat-card>
+    <h3>Filtres :</h3>
+    <mat-form-field appearance="fill">
+        <mat-label>Type de sirop</mat-label>
+        <mat-select [(ngModel)]="typeSiropSlected" multiple>
+            <mat-option *ngFor="let type of typeSiropList | keyvalue" [value]="type.value">{{type.key | lowercase}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-card>

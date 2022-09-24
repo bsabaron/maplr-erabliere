@@ -1,0 +1,21 @@
+<mat-card>
+    <table>
+        <tr *ngFor="let item of panier | keyvalue">
+            <th>
+                <img class="cliquable" (click)="voirDetail(item.key)" src="data:image/png;base64, {{item.key.image}}"
+                    width="200" height="200">
+            </th>
+            <th>
+                <p>{{item.key.name}} - {{item.key.description}}</p>
+                <p>Quantité : {{item.value}}</p>
+                <p>{{item.key.price | currency:'CAD':'symbol':'1.0-2':'fr'}}</p>
+                <button mat-raised-button color="primary" (click)="retirer(item.key, item.value)">retirer</button>
+            </th>
+        </tr>
+    </table>
+    <h3 *ngIf="isPanierVide">Vide</h3>
+</mat-card>
+<mat-card>
+    <h2>Prix total : {{prixTotal | currency:'CAD':'symbol':'1.0-2':'fr'}}</h2>
+    <button mat-raised-button color="primary" [disabled]="isPanierVide" (click)="validerPanier()">Valider</button>
+</mat-card>

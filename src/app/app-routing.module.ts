@@ -1,6 +1,6 @@
-import { PanierComponent } from './panier/panier.component';
-import { DetailProduitComponent } from './detail-produit/detail-produit.component';
-import { CatalogueComponent } from './catalogue/catalogue.component';
+import { PanierComponent } from './composants/panier/panier.component';
+import { DetailProduitComponent } from './composants/detail-produit/detail-produit.component';
+import { CatalogueComponent } from './composants/catalogue/catalogue.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 

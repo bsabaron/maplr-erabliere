@@ -1,23 +1,63 @@
-import { Panier } from './../modeles/panier';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, Subject, tap, throwError } from 'rxjs';
 import { Produit } from '../modeles/produit';
-import { ValidationProduitDto } from '../modeles/dto/validation-produit-dto';
+import { ValidationProduitDto } from '../modeles/validation-produit';
+import { NotificationService } from './notification.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PanierService {
+  public nbProduitPanier: number = 0;
 
-  constructor(private http: HttpClient) { }
+  nbProduitPanierSource = new Subject<number>();
 
-  validerPanier(panier: Map<Produit, number>): Observable<any> {
-    let validationPanier: ValidationProduitDto[] = []
-    panier.forEach((quantite: number, produit: Produit) => {
-      validationPanier.push(new ValidationProduitDto(produit.id, quantite))
-    });
-    return this.http.post('api/commander', JSON.stringify(validationPanier))
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {}
+
+  initialiserNbProduitPanier() {
+    let panier: Map<Produit, number> = new Map(
+      JSON.parse(sessionStorage.getItem('panier')!)
+    );
+    this.nbProduitPanier = Array.from(panier.values()).reduce(
+      (accumulator, quantite) => {
+        return accumulator + quantite;
+      },
+      0
+    );
+    this.nbProduitPanierSource.next(this.nbProduitPanier);
   }
 
+  validerPanier(panier: Map<Produit, number>): Observable<any> {
+    let validationPanier: ValidationProduitDto[] = [];
+
+    panier.forEach((quantite: number, produit: Produit) => {
+      validationPanier.push({
+        productId: produit.id,
+        qty: quantite,
+      } as ValidationProduitDto);
+    });
+
+    return this.http
+      .post('api/commander', JSON.stringify(validationPanier))
+      .pipe(
+        tap(() => this.notificationService.notifier('Commande validée')),
+        catchError((error: HttpErrorResponse) => {
+          this.notificationService.notifierErreur(error.error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  updateNbProduitPanier(quantite: number, isAjout: boolean = true) {
+    if (isAjout) {
+      this.nbProduitPanier += quantite;
+    } else {
+      this.nbProduitPanier -= quantite;
+    }
+    this.nbProduitPanierSource.next(this.nbProduitPanier);
+  }
 }

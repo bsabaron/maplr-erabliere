@@ -1,13 +1,16 @@
 <header></header>
 
 <nav>
-    <app-menu></app-menu>
+    <mat-toolbar>
+        <app-menu></app-menu>
+    </mat-toolbar>
 </nav>
-
 
 <section>
     <aside></aside>
-    <router-outlet></router-outlet>
+    <div class="conteneur-principal">
+        <router-outlet></router-outlet>
+    </div>
 </section>
 
 <footer></footer>

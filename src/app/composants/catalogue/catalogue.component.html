@@ -1,0 +1,16 @@
+<filtre-produit #child></filtre-produit>
+
+<mat-card>
+    <table>
+        <tr class="cliquable" *ngFor="let produit of produits | filtrerProduit: child.typeSiropSlected"
+            (click)="voirDetail(produit)">
+            <th>
+                <img src="data:image/png;base64, {{produit.image}}" width="200" height="200">
+            </th>
+            <th>
+                <p>{{produit?.name}} - {{produit?.description}}</p>
+                <p>{{produit?.price | currency:'CAD':'symbol':'1.0-2':'fr'}}</p>
+            </th>
+        </tr>
+    </table>
+</mat-card>
