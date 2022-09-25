@@ -45,7 +45,11 @@ export class PanierComponent implements OnInit {
   }
 
   validerPanier() {
-    this.panierService.validerPanier(this.panier).subscribe()
+    this.panierService.validerPanier(this.panier).subscribe(()=>{
+      this.panier.clear()
+      this.calculerPrixTotal()
+      this.isPanierVide = true
+    })
   }
 
 }

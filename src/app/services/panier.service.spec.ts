@@ -69,7 +69,7 @@ describe('PanierService', () => {
     const req = httpTestingController.expectOne('api/commander');
 
     expect(req.request.body).toEqual(
-      JSON.stringify([
+      [
         {
           productId: produits[0].id,
           qty: 2,
@@ -79,9 +79,9 @@ describe('PanierService', () => {
           qty: 1,
         },
       ] as ValidationProduitDto[])
-    );
 
     expect(notificationServiceSpy.notifier).toHaveBeenCalled
+    expect(service.viderPanier).toHaveBeenCalled
   });
 
   it('doit update nombre produits panier lors d\'un ajout', () => {
@@ -110,5 +110,16 @@ describe('PanierService', () => {
 
     sessionStorage.setItem('panier', JSON.stringify(Array.from(new Map([[produits[0], 4], [produits[1], 2]]))));
     service.initialiserNbProduitPanier();
+  });
+
+  it('doit vider panier', () => {
+    sessionStorage.setItem('panier', JSON.stringify(Array.from(new Map([[produits[0], 4], [produits[1], 2]]))));
+    
+    service.viderPanier()
+
+    service.nbProduitPanierSource.subscribe((data) => {
+      expect(data).toBe(0);
+    });
+    expect(sessionStorage.length).toBe(0)
   });
 });

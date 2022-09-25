@@ -1,6 +1,8 @@
+import { registerLocaleData } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 import { TypeSirop } from '../../enum/type-sirop';
 import { Produit } from '../../modeles/produit';
 import { PanierService } from '../../services/panier.service';
@@ -13,7 +15,7 @@ describe('PanierComponent', () => {
 
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const panierServiceSpy = jasmine.createSpyObj('PanierService', [
-    'updateNbProduitPanier',
+    'updateNbProduitPanier', 'validerPanier'
   ]);
 
   let produits: Produit[] = [
@@ -98,5 +100,17 @@ describe('PanierComponent', () => {
     component.voirDetail(produits[0]);
     const navArgs = routerSpy.navigate.calls.first().args[0];
     expect(navArgs).toEqual(['/produit/', 'id1']);
+  });
+
+  it('doit valider panier', () => {
+    panierServiceSpy.validerPanier.and.returnValue(of('OK'));
+
+    component.validerPanier();
+
+    panierServiceSpy.validerPanier().subscribe(() => {
+      expect(component.panier.size).toBe(0);
+      expect(component.calculerPrixTotal).toHaveBeenCalled;
+      expect(component.isPanierVide).toBeTrue;
+    });
   });
 });

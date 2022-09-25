@@ -32,19 +32,22 @@ export class PanierService {
   }
 
   validerPanier(panier: Map<Produit, number>): Observable<any> {
-    let validationPanier: ValidationProduitDto[] = [];
+    let validationProduitList: ValidationProduitDto[] = [];
 
     panier.forEach((quantite: number, produit: Produit) => {
-      validationPanier.push({
+      validationProduitList.push({
         productId: produit.id,
         qty: quantite,
       } as ValidationProduitDto);
     });
 
     return this.http
-      .post('api/commander', JSON.stringify(validationPanier))
+      .post<ValidationProduitDto[]>('api/commander', validationProduitList)
       .pipe(
-        tap(() => this.notificationService.notifier('Commande validée')),
+        tap(() => {
+          this.notificationService.notifier('Commande validée');
+          this.viderPanier()
+        }),
         catchError((error: HttpErrorResponse) => {
           this.notificationService.notifierErreur(error.error);
           return throwError(() => error);
@@ -59,5 +62,10 @@ export class PanierService {
       this.nbProduitPanier -= quantite;
     }
     this.nbProduitPanierSource.next(this.nbProduitPanier);
+  }
+
+  viderPanier(){
+    this.nbProduitPanierSource.next(0);
+    sessionStorage.clear()
   }
 }

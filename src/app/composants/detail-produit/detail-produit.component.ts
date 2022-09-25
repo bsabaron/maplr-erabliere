@@ -67,6 +67,7 @@ export class DetailProduitComponent implements OnInit {
 
     sessionStorage.setItem('panier', JSON.stringify(Array.from(panier.entries())));
     this.stock -= quantite
+    this.qtySelected = 1
     this.panierService.updateNbProduitPanier(quantite);
     this.notificationService.notifier('Ajouté au panier');
   }
